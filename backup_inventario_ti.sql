@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `areas` (
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla inventario_ti.areas: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla inventario_ti.areas: ~0 rows (aproximadamente)
 DELETE FROM `areas`;
 
 -- Volcando estructura para tabla inventario_ti.asignaciones
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `asignaciones` (
   CONSTRAINT `fk_equipo_asignado` FOREIGN KEY (`id_equipo`) REFERENCES `equipos` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla inventario_ti.asignaciones: ~4 rows (aproximadamente)
+-- Volcando datos para la tabla inventario_ti.asignaciones: ~0 rows (aproximadamente)
 DELETE FROM `asignaciones`;
 
 -- Volcando estructura para tabla inventario_ti.bajas
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `cargos` (
   CONSTRAINT `fk_cargo_area` FOREIGN KEY (`id_area`) REFERENCES `areas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla inventario_ti.cargos: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla inventario_ti.cargos: ~0 rows (aproximadamente)
 DELETE FROM `cargos`;
 
 -- Volcando estructura para tabla inventario_ti.configuracion
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `configuracion` (
   UNIQUE KEY `clave_unica` (`clave`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla inventario_ti.configuracion: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla inventario_ti.configuracion: ~0 rows (aproximadamente)
 DELETE FROM `configuracion`;
 INSERT INTO `configuracion` (`id`, `clave`, `valor`) VALUES
 	(1, 'moneda_simbolo', 'S/');
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `empleados` (
   CONSTRAINT `fk_empleado_sucursal` FOREIGN KEY (`id_sucursal`) REFERENCES `sucursales` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla inventario_ti.empleados: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla inventario_ti.empleados: ~0 rows (aproximadamente)
 DELETE FROM `empleados`;
 
 -- Volcando estructura para tabla inventario_ti.equipos
@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `equipos` (
   CONSTRAINT `fk_equipo_tipo` FOREIGN KEY (`id_tipo_equipo`) REFERENCES `tipos_equipo` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla inventario_ti.equipos: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla inventario_ti.equipos: ~1 rows (aproximadamente)
 DELETE FROM `equipos`;
 
 -- Volcando estructura para tabla inventario_ti.marcas
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `marcas` (
   UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla inventario_ti.marcas: ~4 rows (aproximadamente)
+-- Volcando datos para la tabla inventario_ti.marcas: ~0 rows (aproximadamente)
 DELETE FROM `marcas`;
 
 -- Volcando estructura para tabla inventario_ti.modelos
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `modelos` (
   CONSTRAINT `fk_modelo_marca` FOREIGN KEY (`id_marca`) REFERENCES `marcas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla inventario_ti.modelos: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla inventario_ti.modelos: ~0 rows (aproximadamente)
 DELETE FROM `modelos`;
 
 -- Volcando estructura para tabla inventario_ti.reparaciones
@@ -200,7 +200,7 @@ CREATE TABLE IF NOT EXISTS `reparaciones` (
   CONSTRAINT `reparaciones_ibfk_1` FOREIGN KEY (`id_equipo`) REFERENCES `equipos` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla inventario_ti.reparaciones: ~4 rows (aproximadamente)
+-- Volcando datos para la tabla inventario_ti.reparaciones: ~0 rows (aproximadamente)
 DELETE FROM `reparaciones`;
 
 -- Volcando estructura para tabla inventario_ti.roles
@@ -274,7 +274,7 @@ CREATE TABLE IF NOT EXISTS `usuario_roles` (
   CONSTRAINT `fk_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla inventario_ti.usuario_roles: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla inventario_ti.usuario_roles: ~2 rows (aproximadamente)
 DELETE FROM `usuario_roles`;
 INSERT INTO `usuario_roles` (`id_usuario`, `id_rol`) VALUES
 	(1, 1),
