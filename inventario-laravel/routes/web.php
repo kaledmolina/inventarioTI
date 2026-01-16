@@ -27,4 +27,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/asignaciones', \App\Livewire\Asignaciones\Index::class)->name('asignaciones.index');
     Route::get('/asignaciones/crear', \App\Livewire\Asignaciones\Create::class)->name('asignaciones.create');
     Route::get('/asignaciones/devolver/{id}', \App\Livewire\Asignaciones\Devolver::class)->name('asignaciones.devolver');
+    Route::get('/asignaciones/pdf/entrega/{id}', [\App\Http\Controllers\PdfController::class, 'generarActaEntrega'])->name('asignaciones.pdf.entrega');
+    Route::get('/asignaciones/pdf/devolucion/{id}', [\App\Http\Controllers\PdfController::class, 'generarActaDevolucion'])->name('asignaciones.pdf.devolucion');
 });
