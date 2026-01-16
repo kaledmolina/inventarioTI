@@ -61,6 +61,13 @@ class Create extends Component
             // 2. Update Equipment Status
             $this->equipo->update(['estado' => 'De Baja']);
 
+            // Registrar en historial
+            \App\Services\HistorialService::registrar(
+                $this->equipo->id,
+                'BAJA',
+                "Equipo dado de baja. Motivo: {$this->motivo}. Detalle: {$this->observaciones}"
+            );
+
             // 3. Create Baja Record
             Baja::create([
                 'id_equipo' => $this->id_equipo,

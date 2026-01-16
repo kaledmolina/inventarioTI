@@ -41,6 +41,13 @@ class Finalizar extends Component
 
             // 2. Update Equipment Status
             $this->reparacion->equipo->update(['estado' => 'Disponible']);
+
+            // Registrar en historial
+            \App\Services\HistorialService::registrar(
+                $this->reparacion->equipo->id,
+                'REPARACION_FIN',
+                "Retorno de reparación. Fecha Salida: {$this->fecha_salida}"
+            );
         });
 
         return redirect()->route('reparaciones.index')->with('status', 'Reparación finalizada y equipo disponible.');

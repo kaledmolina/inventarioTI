@@ -80,6 +80,13 @@ class Devolver extends Component
             $equipo = $this->asignacion->equipo;
             $equipo->update(['estado' => $this->estado_final_equipo]);
 
+            // Registrar en historial
+            \App\Services\HistorialService::registrar(
+                $equipo->id,
+                'DEVOLUCION',
+                "Devuelto por empleado: {$this->asignacion->empleado->nombres} {$this->asignacion->empleado->apellidos}. Estado: {$this->estado_recibido}."
+            );
+
             // 4. Create Reparacion if needed
             if ($this->estado_final_equipo === 'En Reparación') {
                 Reparacion::create([

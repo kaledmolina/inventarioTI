@@ -42,12 +42,8 @@ class DatabaseSeeder extends Seeder
             'activo' => true,
         ]);
 
-        // Asignar rol (Pivot manual si no hay relación Eloquent definida aun, o usar attach si existe)
-        // Como definimos la tabla 'role_user' pero no necesariamente la relación en el modelo User todavía:
-        DB::table('role_user')->insert([
-            'user_id' => $user->id,
-            'role_id' => $adminRole->id
-        ]);
+        // Asignar todos los roles (Administrador y Usuario) para tener todos los permisos
+        $user->roles()->attach([$adminRole->id, $userRole->id]);
 
         // 4. Datos de Ejemplo para Catálogos
 

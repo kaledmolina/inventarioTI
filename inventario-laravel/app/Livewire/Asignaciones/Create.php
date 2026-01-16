@@ -82,6 +82,14 @@ class Create extends Component
         // Update Equipment Status
         $equipo->update(['estado' => 'Asignado']);
 
+        // Registrar en historial
+        $empleado = Empleado::find($this->empleadoId);
+        \App\Services\HistorialService::registrar(
+            $equipo->id,
+            'ASIGNACION',
+            "Asignado a empleado: {$empleado->nombres} {$empleado->apellidos} (DNI: {$empleado->dni})"
+        );
+
         return redirect()->route('asignaciones.index')->with('status', 'Asignación creada correctamente.');
     }
 

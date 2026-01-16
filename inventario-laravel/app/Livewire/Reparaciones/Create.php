@@ -41,6 +41,13 @@ class Create extends Component
             // 1. Update Equipment Status
             $this->equipo->update(['estado' => 'En Reparación']);
 
+            // Registrar en historial
+            \App\Services\HistorialService::registrar(
+                $this->equipo->id,
+                'REPARACION',
+                "Enviado a reparación/mantenimiento. Proveedor: {$this->proveedor}. Motivo: {$this->motivo}"
+            );
+
             // 2. Create Repair Record
             Reparacion::create([
                 'id_equipo' => $this->id_equipo,

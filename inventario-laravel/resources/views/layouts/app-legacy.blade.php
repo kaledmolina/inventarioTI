@@ -63,20 +63,90 @@
             </li>
             <!-- Placeholder links for modules not yet migrated -->
             <li>
-                <a href="#" class="nav-link">
+                <a href="{{ route('asignaciones.index') }}"
+                    class="nav-link {{ request()->routeIs('asignaciones.*') ? 'active' : '' }}">
                     <i class="bi bi-card-checklist"></i> Asignaciones
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link">
+                <a href="{{ route('reparaciones.index') }}"
+                    class="nav-link {{ request()->routeIs('reparaciones.*') ? 'active' : '' }}">
                     <i class="bi bi-tools"></i> Reparaciones
                 </a>
             </li>
             <li>
-                <a href="{{ route('sucursales.index') }}"
-                    class="nav-link {{ request()->routeIs('sucursales.*') ? 'active' : '' }}">
-                    <i class="bi bi-building"></i> Sucursales
+                <a href="{{ route('bajas.index') }}"
+                    class="nav-link {{ request()->routeIs('bajas.*') ? 'active' : '' }}">
+                    <i class="bi bi-trash"></i> Bajas
                 </a>
+            </li>
+            <li>
+                <a href="{{ route('historial.index') }}"
+                    class="nav-link {{ request()->routeIs('historial.*') ? 'active' : '' }}">
+                    <i class="bi bi-clock-history"></i> Historial
+                </a>
+            </li>
+
+            <li class="nav-item mt-2">
+                <a class="nav-link collapsed d-flex justify-content-between align-items-center"
+                    data-bs-toggle="collapse" href="#catalogoCollapse" role="button" aria-expanded="false"
+                    aria-controls="catalogoCollapse">
+                    <span><i class="bi bi-collection me-2"></i> Catálogos</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse {{ request()->is('sucursales*', 'areas*', 'cargos*', 'marcas*', 'modelos*', 'tipos-equipo*', 'estados*', 'usuarios*') ? 'show' : '' }}"
+                    id="catalogoCollapse">
+                    <ul class="nav flex-column ps-3 mt-1">
+                        <li>
+                            <a href="{{ route('sucursales.index') }}"
+                                class="nav-link py-1 {{ request()->routeIs('sucursales.*') ? 'text-white fw-bold' : 'text-white-50' }}">
+                                <i class="bi bi-building me-2"></i> Sucursales
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('areas.index') }}"
+                                class="nav-link py-1 {{ request()->routeIs('areas.*') ? 'text-white fw-bold' : 'text-white-50' }}">
+                                <i class="bi bi-diagram-3 me-2"></i> Áreas
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('cargos.index') }}"
+                                class="nav-link py-1 {{ request()->routeIs('cargos.*') ? 'text-white fw-bold' : 'text-white-50' }}">
+                                <i class="bi bi-person-vcard me-2"></i> Cargos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('marcas.index') }}"
+                                class="nav-link py-1 {{ request()->routeIs('marcas.*') ? 'text-white fw-bold' : 'text-white-50' }}">
+                                <i class="bi bi-tag me-2"></i> Marcas
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('modelos.index') }}"
+                                class="nav-link py-1 {{ request()->routeIs('modelos.*') ? 'text-white fw-bold' : 'text-white-50' }}">
+                                <i class="bi bi-pc-display me-2"></i> Modelos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('tipos-equipo.index') }}"
+                                class="nav-link py-1 {{ request()->routeIs('tipos-equipo.*') ? 'text-white fw-bold' : 'text-white-50' }}">
+                                <i class="bi bi-hdd-network me-2"></i> Tipos Equipo
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('estados.index') }}"
+                                class="nav-link py-1 {{ request()->routeIs('estados.*') ? 'text-white fw-bold' : 'text-white-50' }}">
+                                <i class="bi bi-info-circle me-2"></i> Estados
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('usuarios.index') }}"
+                                class="nav-link py-1 {{ request()->routeIs('usuarios.*') ? 'text-white fw-bold' : 'text-white-50' }}">
+                                <i class="bi bi-people-fill me-2"></i> Usuarios
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
 
             <hr class="my-2 border-white opacity-25">
