@@ -24,6 +24,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sucursales/crear', \App\Livewire\Sucursales\Create::class)->name('sucursales.create');
     Route::get('/sucursales/editar/{id}', \App\Livewire\Sucursales\Edit::class)->name('sucursales.edit');
 
+    // Usuarios
+    Route::get('/usuarios', \App\Livewire\Usuarios\Index::class)->name('usuarios.index');
+    Route::get('/usuarios/crear', \App\Livewire\Usuarios\Create::class)->name('usuarios.create');
+    Route::get('/usuarios/editar/{id}', \App\Livewire\Usuarios\Edit::class)->name('usuarios.edit');
+
     // Areas
     Route::get('/areas', \App\Livewire\Areas\Index::class)->name('areas.index');
     Route::get('/areas/crear', \App\Livewire\Areas\Create::class)->name('areas.create');
