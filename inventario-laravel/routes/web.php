@@ -20,6 +20,42 @@ require __DIR__ . '/auth.php';
 // New Inventory Routes (Protected)
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sucursales', SucursalesIndex::class)->name('sucursales.index');
+
+    // Areas
+    Route::get('/areas', \App\Livewire\Areas\Index::class)->name('areas.index');
+    Route::get('/areas/crear', \App\Livewire\Areas\Create::class)->name('areas.create');
+    Route::get('/areas/editar/{id}', \App\Livewire\Areas\Edit::class)->name('areas.edit');
+
+    // Cargos
+    Route::get('/cargos', \App\Livewire\Cargos\Index::class)->name('cargos.index');
+    Route::get('/cargos/crear', \App\Livewire\Cargos\Create::class)->name('cargos.create');
+    Route::get('/cargos/editar/{id}', \App\Livewire\Cargos\Edit::class)->name('cargos.edit');
+
+    // Cargos
+    Route::get('/cargos', \App\Livewire\Cargos\Index::class)->name('cargos.index');
+    Route::get('/cargos/crear', \App\Livewire\Cargos\Create::class)->name('cargos.create');
+    Route::get('/cargos/editar/{id}', \App\Livewire\Cargos\Edit::class)->name('cargos.edit');
+
+    // Marcas
+    Route::get('/marcas', \App\Livewire\Marcas\Index::class)->name('marcas.index');
+    Route::get('/marcas/crear', \App\Livewire\Marcas\Create::class)->name('marcas.create');
+    Route::get('/marcas/editar/{id}', \App\Livewire\Marcas\Edit::class)->name('marcas.edit');
+
+    // Modelos
+    Route::get('/modelos', \App\Livewire\Modelos\Index::class)->name('modelos.index');
+    Route::get('/modelos/crear', \App\Livewire\Modelos\Create::class)->name('modelos.create');
+    Route::get('/modelos/editar/{id}', \App\Livewire\Modelos\Edit::class)->name('modelos.edit');
+
+    // Tipos de Equipo
+    Route::get('/tipos-equipo', \App\Livewire\TiposEquipo\Index::class)->name('tipos-equipo.index');
+    Route::get('/tipos-equipo/crear', \App\Livewire\TiposEquipo\Create::class)->name('tipos-equipo.create');
+    Route::get('/tipos-equipo/editar/{id}', \App\Livewire\TiposEquipo\Edit::class)->name('tipos-equipo.edit');
+
+    // Estados de Equipo
+    Route::get('/estados', \App\Livewire\Estados\Index::class)->name('estados.index');
+    Route::get('/estados/crear', \App\Livewire\Estados\Create::class)->name('estados.create');
+    Route::get('/estados/editar/{id}', \App\Livewire\Estados\Edit::class)->name('estados.edit');
+
     Route::get('/empleados', EmpleadosIndex::class)->name('empleados.index');
     Route::get('/empleados/crear', \App\Livewire\Empleados\Create::class)->name('empleados.create');
     Route::get('/empleados/editar/{id}', \App\Livewire\Empleados\Edit::class)->name('empleados.edit');
