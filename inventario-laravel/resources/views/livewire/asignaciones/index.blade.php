@@ -113,8 +113,10 @@
                                 </td>
                                 <td>
                                     @if($asignacion->acta_firmada_path)
-                                        <button class="btn btn-info btn-sm" title="Ver Acta Entrega"><i
-                                                class="bi bi-file-earmark-pdf-fill"></i></button>
+                                        <a href="{{ asset('storage/' . $asignacion->acta_firmada_path) }}" target="_blank"
+                                            class="btn btn-info btn-sm" title="Ver Acta Entrega">
+                                            <i class="bi bi-file-earmark-pdf-fill"></i>
+                                        </a>
                                     @else
                                         <button class="btn btn-outline-primary btn-sm" title="Subir Acta Entrega"><i
                                                 class="bi bi-upload"></i></button>
@@ -123,8 +125,10 @@
                                 <td>
                                     @if($asignacion->fecha_devolucion)
                                         @if($asignacion->acta_devolucion_path)
-                                            <button class="btn btn-info btn-sm" title="Ver Acta Devolución"><i
-                                                    class="bi bi-file-earmark-pdf-fill"></i></button>
+                                            <a href="{{ asset('storage/' . $asignacion->acta_devolucion_path) }}" target="_blank"
+                                                class="btn btn-info btn-sm" title="Ver Acta Devolución">
+                                                <i class="bi bi-file-earmark-pdf-fill"></i>
+                                            </a>
                                         @else
                                             <button class="btn btn-outline-danger btn-sm" title="Subir Acta Devolución"><i
                                                     class="bi bi-upload"></i></button>
