@@ -80,6 +80,72 @@ $historial_reparaciones = $stmt_reparaciones->get_result();
     </div>
 </div>
 
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-qr-code"></i> Código QR de Identificación</span>
+        <button onclick="imprimirEtiqueta()" class="btn btn-sm btn-outline-dark"><i class="bi bi-printer"></i> Imprimir Etiqueta</button>
+    </div>
+    <div class="card-body d-flex align-items-center justify-content-start gap-4">
+        <div id="qrcode"></div>
+        <div>
+            <h5 class="fw-bold mb-1"><?php echo htmlspecialchars($equipo['codigo_inventario'] ?? 'SIN CODIGO'); ?></h5>
+            <p class="text-muted mb-0 small">Escanea para ver detalles</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Generar QR
+        const qrContainer = document.getElementById("qrcode");
+        // URL absoluta para el QR
+        const url = window.location.protocol + "//" + window.location.host + "/equipo_detalle.php?id=<?php echo $id_equipo; ?>";
+        
+        new QRCode(qrContainer, {
+            text: url,
+            width: 100,
+            height: 100
+        });
+    });
+
+    function imprimirEtiqueta() {
+        const codigo = "<?php echo htmlspecialchars($equipo['codigo_inventario'] ?? 'N/A'); ?>";
+        const qrCanvas = document.querySelector("#qrcode canvas");
+        const qrImg = document.querySelector("#qrcode img"); // Fallback if library renders img
+        
+        let qrDataUrl = "";
+        if(qrCanvas) qrDataUrl = qrCanvas.toDataURL("image/png");
+        else if(qrImg) qrDataUrl = qrImg.src;
+
+        const ventanaImpresion = window.open('', '', 'width=400,height=400');
+        ventanaImpresion.document.write(`
+            <html>
+            <head>
+                <style>
+                    body { font-family: sans-serif; text-align: center; padding: 20px; }
+                    .etiqueta { border: 2px solid #000; padding: 10px; display: inline-block; border-radius: 8px; }
+                    h2 { margin: 5px 0 10px 0; font-size: 18px; }
+                    img { width: 120px; height: 120px; }
+                    .footer { font-size: 10px; margin-top: 5px; }
+                </style>
+            </head>
+            <body>
+                <div class="etiqueta">
+                    <h2>Inventario TI</h2>
+                    <img src="${qrDataUrl}" />
+                    <h3>${codigo}</h3>
+                    <div class="footer">Propiedad de la Empresa</div>
+                </div>
+                <script>
+                    window.onload = function() { window.print(); window.close(); }
+                <\/script>
+            </body>
+            </html>
+        `);
+        ventanaImpresion.document.close();
+    }
+</script>
+
 <div class="card">
     <div class="card-header">
         Historial de Reparaciones
