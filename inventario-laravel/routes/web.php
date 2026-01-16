@@ -22,6 +22,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sucursales', SucursalesIndex::class)->name('sucursales.index');
     Route::get('/empleados', EmpleadosIndex::class)->name('empleados.index');
     Route::get('/equipos', EquiposIndex::class)->name('equipos.index');
+    Route::get('/equipos/crear', \App\Livewire\Equipos\Create::class)->name('equipos.create');
+    Route::get('/equipos/editar/{id}', \App\Livewire\Equipos\Edit::class)->name('equipos.edit');
 
     // Assignments
     Route::get('/asignaciones', \App\Livewire\Asignaciones\Index::class)->name('asignaciones.index');

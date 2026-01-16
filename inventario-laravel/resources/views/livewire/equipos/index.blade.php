@@ -72,7 +72,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <span>Inventario Actual</span>
-            <button class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i> Registrar Nuevo Equipo</button>
+            <a href="{{ route('equipos.create') }}" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i> Registrar Nuevo Equipo</a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -115,7 +115,7 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         <button class="btn btn-primary btn-sm" title="Ver Detalle"><i class="bi bi-eye-fill"></i></button>
-                                        <button class="btn btn-warning btn-sm" title="Editar Equipo"><i class="bi bi-pencil-fill"></i></button>
+                                        <a href="{{ route('equipos.edit', $equipo->id) }}" class="btn btn-warning btn-sm" title="Editar Equipo"><i class="bi bi-pencil-fill"></i></a>
                                         
                                         @if($equipo->estado === 'Disponible')
                                             <button class="btn btn-info btn-sm" title="Enviar a Reparación"><i class="bi bi-wrench"></i></button>
