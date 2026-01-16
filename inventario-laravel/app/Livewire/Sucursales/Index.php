@@ -13,6 +13,7 @@ class Index extends Component
     public $search = '';
     public $perPage = 10;
 
+    #[Layout('layouts.app-legacy')]
     public function render()
     {
         $sucursales = Sucursal::query()
