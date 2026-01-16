@@ -36,6 +36,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
     <link rel="stylesheet" href="css/style.css?ver=<?php echo time(); ?>">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 
 <body>
@@ -63,45 +64,45 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     <i class="bi bi-speedometer2"></i> Dashboard
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="escanear.php" class="nav-link <?php if ($current_page == 'escanear.php')
+                    echo 'active'; ?>">
+                    <i class="bi bi-qr-code-scan"></i> Escanear
+                </a>
+            </li>
             <li>
-                <a href="equipos.php"
-                    class="nav-link <?php if (in_array($current_page, ['equipos.php', 'equipo_agregar.php', 'equipo_editar.php', 'equipo_detalle.php']))
-                        echo 'active'; ?>">
+                <a href="equipos.php" class="nav-link <?php if (in_array($current_page, ['equipos.php', 'equipo_agregar.php', 'equipo_editar.php', 'equipo_detalle.php']))
+                    echo 'active'; ?>">
                     <i class="bi bi-laptop"></i> Equipos
                 </a>
             </li>
             <li>
-                <a href="empleados.php"
-                    class="nav-link <?php if (in_array($current_page, ['empleados.php', 'empleado_agregar.php', 'empleado_editar.php']))
-                        echo 'active'; ?>">
+                <a href="empleados.php" class="nav-link <?php if (in_array($current_page, ['empleados.php', 'empleado_agregar.php', 'empleado_editar.php']))
+                    echo 'active'; ?>">
                     <i class="bi bi-people"></i> Empleados
                 </a>
             </li>
             <li>
-                <a href="asignaciones.php"
-                    class="nav-link <?php if (str_starts_with($current_page, 'asignacion'))
-                        echo 'active'; ?>">
+                <a href="asignaciones.php" class="nav-link <?php if (str_starts_with($current_page, 'asignacion'))
+                    echo 'active'; ?>">
                     <i class="bi bi-card-checklist"></i> Asignaciones
                 </a>
             </li>
             <li>
-                <a href="reparaciones.php"
-                    class="nav-link <?php if (str_starts_with($current_page, 'reparacion'))
-                        echo 'active'; ?>">
+                <a href="reparaciones.php" class="nav-link <?php if (str_starts_with($current_page, 'reparacion'))
+                    echo 'active'; ?>">
                     <i class="bi bi-tools"></i> Reparaciones
                 </a>
             </li>
             <li>
-                <a href="bajas.php"
-                    class="nav-link <?php if (str_starts_with($current_page, 'baja') || $current_page == 'equipo_dar_de_baja.php')
-                        echo 'active'; ?>">
+                <a href="bajas.php" class="nav-link <?php if (str_starts_with($current_page, 'baja') || $current_page == 'equipo_dar_de_baja.php')
+                    echo 'active'; ?>">
                     <i class="bi bi-trash"></i> Bajas
                 </a>
             </li>
             <li>
-                <a href="gestion_catalogos.php"
-                    class="nav-link <?php if ($current_page == 'gestion_catalogos.php')
-                        echo 'active'; ?>">
+                <a href="gestion_catalogos.php" class="nav-link <?php if ($current_page == 'gestion_catalogos.php')
+                    echo 'active'; ?>">
                     <i class="bi bi-tags"></i> Catálogos
                 </a>
             </li>
@@ -114,16 +115,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <div class="small text-uppercase text-white-50 mb-2 px-3">Administración</div>
 
                 <li>
-                    <a href="gestion_usuarios.php"
-                        class="nav-link <?php if (str_starts_with($current_page, 'usuario'))
-                            echo 'active'; ?>">
+                    <a href="gestion_usuarios.php" class="nav-link <?php if (str_starts_with($current_page, 'usuario'))
+                        echo 'active'; ?>">
                         <i class="bi bi-shield-lock"></i> Usuarios
                     </a>
                 </li>
                 <li>
-                    <a href="configuracion.php"
-                        class="nav-link <?php if ($current_page == 'configuracion.php')
-                            echo 'active'; ?>">
+                    <a href="configuracion.php" class="nav-link <?php if ($current_page == 'configuracion.php')
+                        echo 'active'; ?>">
                         <i class="bi bi-gear"></i> Configuración
                     </a>
                 </li>
@@ -134,10 +133,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     </a>
                 </li>
                 <li>
-                    <a href="reset_system.php"
-                        class="nav-link text-danger <?php if ($current_page == 'reset_system.php')
-                            echo 'active bg-danger text-white'; ?>"
-                        style="font-weight: 600;">
+                    <a href="reset_system.php" class="nav-link text-danger <?php if ($current_page == 'reset_system.php')
+                        echo 'active bg-danger text-white'; ?>" style="font-weight: 600;">
                         <i class="bi bi-exclamation-triangle"></i> Restablecer
                     </a>
                 </li>
