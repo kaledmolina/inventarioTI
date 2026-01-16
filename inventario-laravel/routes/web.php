@@ -29,6 +29,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/usuarios/crear', \App\Livewire\Usuarios\Create::class)->name('usuarios.create');
     Route::get('/usuarios/editar/{id}', \App\Livewire\Usuarios\Edit::class)->name('usuarios.edit');
 
+    // Historial
+    Route::get('/historial', \App\Livewire\Historial\Index::class)->name('historial.index');
+
     // Areas
     Route::get('/areas', \App\Livewire\Areas\Index::class)->name('areas.index');
     Route::get('/areas/crear', \App\Livewire\Areas\Create::class)->name('areas.create');
