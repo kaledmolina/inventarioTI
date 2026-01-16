@@ -13,7 +13,6 @@ class Index extends Component
     public $search = '';
     public $perPage = 10;
 
-    #[Layout('layouts.app-legacy')]
     public function render()
     {
         $sucursales = Sucursal::query()
@@ -26,6 +25,6 @@ class Index extends Component
 
         return view('livewire.sucursales.index', [
             'sucursales' => $sucursales
-        ]);
+        ])->layout('layouts.app-legacy');
     }
 }
