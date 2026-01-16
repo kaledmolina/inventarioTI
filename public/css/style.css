@@ -1,190 +1,325 @@
 /* =========================================
    1. VARIABLES GLOBALES & RESET
    ================================********* */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
 :root {
-    --primary-blue: #2563eb;       /* Azul Principal */
-    --primary-dark: #1e40af;       /* Azul Oscuro */
-    --bg-body: #f8fafc;            /* Fondo gris muy suave */
-    --bg-card: #ffffff;            /* Fondo blanco */
-    --text-main: #1e293b;          /* Texto oscuro */
-    --text-muted: #64748b;         /* Texto secundario */
+    --primary-blue: #4f46e5;       /* Indigo más moderno */
+    --primary-dark: #4338ca;       /* Indigo más oscuro */
+    --secondary: #ec4899;          /* Rosa vibrante para acentos */
+    --bg-body: #f3f4f6;            /* Gris azulado muy suave */
+    --bg-card: #ffffff;            
+    --text-main: #1f2937;          /* Gris oscuro */
+    --text-muted: #6b7280;         /* Gris medio */
     
-    --radius-md: 12px;
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
     --radius-pill: 50px;
-    --sidebar-width: 280px;        /* Ancho del menú en PC */
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    
+    --sidebar-width: 280px;
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
-    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    font-family: 'Outfit', sans-serif;
     background-color: var(--bg-body);
     color: var(--text-main);
     margin: 0;
-    overflow-x: hidden; /* Evita el scroll horizontal */
+    overflow-x: hidden;
+    line-height: 1.6;
 }
 
 /* =========================================
-   2. ESTRUCTURA DEL LAYOUT (ESCRITORIO)
+   2. ESTRUCTURA DEL LAYOUT
    ================================********* */
-/* Solo aplicamos flex row si NO es la página de login */
 body:not(.login-page) {
     display: flex;
     flex-direction: row;
     min-height: 100vh;
 }
 
-/* Sidebar en Escritorio: Fijo a la izquierda */
 #sidebar {
     width: var(--sidebar-width);
     height: 100vh;
     position: sticky;
     top: 0;
     left: 0;
-    background: linear-gradient(180deg, var(--primary-blue) 0%, var(--primary-dark) 100%) !important;
-    box-shadow: 4px 0 15px rgba(37, 99, 235, 0.1);
+    background: linear-gradient(145deg, var(--primary-blue), var(--primary-dark));
+    box-shadow: var(--shadow-lg);
     color: white;
     flex-shrink: 0;
     overflow-y: auto;
-    z-index: 1050; /* Por encima del contenido */
-    transition: transform 0.3s ease-in-out;
+    z-index: 1050;
+    transition: var(--transition-normal);
 }
 
-/* Contenido Principal en Escritorio */
 .main-content {
     flex-grow: 1;
-    padding: 30px;
+    padding: 2rem;
     width: calc(100% - var(--sidebar-width));
     overflow-y: auto;
-    transition: margin-left 0.3s ease-in-out;
+    transition: var(--transition-normal);
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* =========================================
-   3. ESTILOS VISUALES (Menú, Botones, Cards)
+   3. ESTILOS VISUALES MEJORADOS
    ================================********* */
+
+/* --- Sidebar Navigation --- */
 .nav-pills .nav-link {
-    color: rgba(255, 255, 255, 0.85) !important;
+    color: rgba(255, 255, 255, 0.7);
     font-weight: 500;
-    margin-bottom: 5px;
-    border-radius: var(--radius-md);
-    padding: 10px 15px;
-    transition: all 0.2s ease;
+    margin-bottom: 8px;
+    border-radius: var(--radius-sm);
+    padding: 12px 20px;
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+}
+
+.nav-pills .nav-link i {
+    font-size: 1.2rem;
+    margin-right: 12px;
+    transition: transform var(--transition-fast);
 }
 
 .nav-pills .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: white !important;
-    transform: translateX(5px);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.nav-pills .nav-link:hover i {
+    transform: scale(1.1);
 }
 
 .nav-pills .nav-link.active {
-    background-color: white !important;
-    color: var(--primary-blue) !important;
-    font-weight: 700;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-left: 4px solid var(--secondary);
 }
 
+/* --- Cards con Efecto Moderno --- */
 .card {
-    background-color: var(--bg-card);
+    background: var(--bg-card);
     border: none;
     border-radius: var(--radius-md);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    margin-bottom: 20px;
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding: 1.25rem;
+}
+
+.card-header h6 {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--primary-dark);
+}
+
+/* --- Botones --- */
+.btn {
+    padding: 10px 24px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: all var(--transition-fast);
+    text-transform: uppercase;
+    font-size: 0.85rem;
 }
 
 .btn-primary {
-    background-color: var(--primary-blue);
-    border-color: var(--primary-blue);
-    border-radius: var(--radius-pill);
-    padding: 8px 20px;
-    font-weight: 600;
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+    border: none;
+    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
 }
 
-/* Inputs Modernos */
-.form-control, .form-select {
-    border-radius: 8px;
-    padding: 8px 12px;
-    border: 1px solid #cbd5e1;
+.btn-primary:hover {
+    box-shadow: 0 6px 12px rgba(79, 70, 229, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border: none;
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    border: none;
+}
+
+/* --- Tablas --- */
+.table-responsive {
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.table {
+    margin-bottom: 0;
+    background-color: white;
 }
 
 .table thead th {
-    background-color: #f1f5f9 !important;
-    color: var(--text-main) !important;
-    border-bottom: 2px solid #e2e8f0;
+    background-color: #f8fafc;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #e5e7eb;
+    padding: 16px;
+}
+
+.table tbody td {
+    padding: 16px;
+    vertical-align: middle;
+    color: var(--text-main);
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* --- Inputs --- */
+.form-control, .form-select {
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    background-color: #f9fafb;
+    transition: all var(--transition-fast);
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: white;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
 /* =========================================
-   4. ESTILOS LOGIN (BLUE SPLIT)
+   4. DASHBOARD SPECIFIC
+   ================================********* */
+.dashboard-stat-card {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    border-radius: var(--radius-md);
+    color: white;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.dashboard-stat-card::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.stat-card-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.stat-card-orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.stat-card-green { background: linear-gradient(135deg, #10b981, #059669); }
+.stat-card-purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+
+.stat-icon {
+    font-size: 3rem;
+    opacity: 0.8;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    transition: transform var(--transition-fast);
+}
+
+.dashboard-stat-card:hover .stat-icon {
+    transform: scale(1.2) rotate(-10deg);
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    z-index: 1;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-label {
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.9;
+    z-index: 1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* =========================================
+   5. LOGIN PAGE REAMPS
    ================================********* */
 body.login-page {
-    background-color: #ffffff;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: radial-gradient(circle at top right, #e0e7ff, #ffffff);
 }
-.login-layout { display: flex; width: 100%; height: 100%; }
+
 .login-left {
-    width: 50%; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: white; text-align: center; clip-path: ellipse(120% 100% at 0% 50%); z-index: 10;
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary));
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
 }
-.illustration-icon { font-size: 10rem; margin-bottom: 20px; animation: floatAnimation 4s infinite; }
-.login-right { width: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fff; }
-.login-form-container { width: 100%; max-width: 400px; }
-.form-control-custom { width: 100%; padding: 15px 20px; border-radius: 50px; background: #f3f4f6; border: 1px solid transparent; }
-.btn-login-blue { width: 100%; padding: 15px; background: var(--primary-blue); color: white; border-radius: 50px; border: none; margin-top: 10px; }
-@keyframes floatAnimation { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+.btn-login-blue {
+    background: linear-gradient(90deg, var(--primary-blue), var(--secondary));
+    transition: background-position 0.5s;
+    background-size: 200% auto;
+}
+
+.btn-login-blue:hover {
+    background-position: right center;
+}
 
 /* =========================================
-   5. RESPONSIVE (MÓVIL Y TABLET)
+   6. RESPONSIVE
    ================================********* */
-/* Overlay oscuro para cuando el menú está abierto */
-.sidebar-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1040; /* Debajo del sidebar, encima del contenido */
-    display: none; /* Oculto por defecto */
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-.sidebar-overlay.active { display: block; opacity: 1; }
-
 @media (max-width: 991.98px) {
-    /* 1. Cambiamos la dirección del cuerpo a columna */
-    body:not(.login-page) {
-        flex-direction: column;
-    }
-
-    /* 2. El Sidebar se vuelve "Flotante" y oculto a la izquierda */
+    body:not(.login-page) { flex-direction: column; }
     #sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        width: 260px !important; /* Ancho un poco menor en móvil */
-        transform: translateX(-100%); /* Oculto fuera de pantalla */
-        box-shadow: none;
+        width: 100%; height: auto; position: relative;
+        padding: 1rem;
     }
-
-    /* Clase para mostrar el sidebar */
-    #sidebar.active {
-        transform: translateX(0); /* Entra a la pantalla */
-        box-shadow: 4px 0 15px rgba(0,0,0,0.3);
-    }
-
-    /* 3. El contenido ocupa el 100% */
-    .main-content {
-        width: 100%;
-        padding: 20px 15px; /* Menos padding en móvil */
-        margin-left: 0;
-    }
-
-    /* 4. Ajustes Login en Móvil */
-    .login-layout { flex-direction: column; }
-    .login-left { width: 100%; min-height: 35vh; clip-path: none; border-radius: 0 0 40px 40px; padding: 20px; }
-    .login-right { width: 100%; min-height: 65vh; padding: 20px; }
-    .illustration-icon { font-size: 5rem; }
-    .login-welcome-title { font-size: 2rem; }
-    .login-title { font-size: 2rem; margin-bottom: 20px; }
+    .main-content { width: 100%; padding: 1rem; }
+    .table-responsive { overflow-x: auto; }
+    
+    .login-left { clip-path: none; width: 100%; height: 30vh; }
+    .login-right { width: 100%; height: 70vh; }
 }

@@ -70,38 +70,26 @@ while ($row = $res_chart2->fetch_assoc()) {
 
 <div class="row g-4 mb-4">
     <div class="col-md-4">
-        <div class="card text-white bg-primary h-100 shadow-sm border-0">
-            <div class="card-body d-flex justify-content-between align-items-center p-4">
-                <div>
-                    <h6 class="card-title mb-1">Total de Equipos</h6>
-                    <h2 class="display-6 fw-bold mb-0"><?php echo $total_equipos; ?></h2>
-                </div>
-                <i class="bi bi-server fs-1 opacity-50"></i>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-4">
-        <div class="card text-dark bg-warning h-100 shadow-sm border-0">
-            <div class="card-body d-flex justify-content-between align-items-center p-4">
-                <div>
-                    <h6 class="card-title mb-1">Equipos Asignados</h6>
-                    <h2 class="display-6 fw-bold mb-0"><?php echo $total_asignados; ?></h2>
-                </div>
-                <i class="bi bi-person-check fs-1 opacity-50"></i>
-            </div>
+        <div class="dashboard-stat-card stat-card-blue shadow-lg">
+            <h6 class="stat-label">Total de Equipos</h6>
+            <h2 class="stat-value"><?php echo $total_equipos; ?></h2>
+            <i class="bi bi-server stat-icon"></i>
         </div>
     </div>
 
     <div class="col-md-4">
-        <div class="card text-white bg-success h-100 shadow-sm border-0">
-            <div class="card-body d-flex justify-content-between align-items-center p-4">
-                <div>
-                    <h6 class="card-title mb-1">Equipos Disponibles</h6>
-                    <h2 class="display-6 fw-bold mb-0"><?php echo $total_disponibles; ?></h2>
-                </div>
-                <i class="bi bi-box-seam fs-1 opacity-50"></i>
-            </div>
+        <div class="dashboard-stat-card stat-card-orange shadow-lg">
+            <h6 class="stat-label">Equipos Asignados</h6>
+            <h2 class="stat-value"><?php echo $total_asignados; ?></h2>
+            <i class="bi bi-person-check stat-icon"></i>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="dashboard-stat-card stat-card-green shadow-lg">
+            <h6 class="stat-label">Equipos Disponibles</h6>
+            <h2 class="stat-value"><?php echo $total_disponibles; ?></h2>
+            <i class="bi bi-box-seam stat-icon"></i>
         </div>
     </div>
 </div>
@@ -126,7 +114,7 @@ while ($row = $res_chart2->fetch_assoc()) {
             </div>
         </div>
     </div>
-    
+
     <div class="col-md-6 mb-4">
         <div class="card shadow-sm h-100">
             <div class="card-header bg-white py-3 border-0">
@@ -153,79 +141,79 @@ while ($row = $res_chart2->fetch_assoc()) {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    
-    // --- GRÁFICO 1: DONA (TIPOS) ---
-    <?php if (count($tipos_data) > 0): ?>
-    const ctx1 = document.getElementById('chartTipos');
-    if (ctx1) {
-        new Chart(ctx1, {
-            type: 'doughnut',
-            data: {
-                labels: <?php echo json_encode($tipos_labels); ?>,
-                datasets: [{
-                    label: 'Cantidad',
-                    data: <?php echo json_encode($tipos_data); ?>,
-                    backgroundColor: [
-                        '#3b82f6', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#6366f1'
-                    ],
-                    borderWidth: 2,
-                    hoverOffset: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
-                }
-            }
-        });
-    }
-    <?php endif; ?>
+    document.addEventListener("DOMContentLoaded", function () {
 
-    // --- GRÁFICO 2: BARRAS (SUCURSALES) ---
-    <?php if (count($sucursal_labels) > 0): ?>
-    const ctx2 = document.getElementById('chartSucursales');
-    if (ctx2) {
-        new Chart(ctx2, {
-            type: 'bar',
-            data: {
-                labels: <?php echo json_encode($sucursal_labels); ?>,
-                datasets: [
-                    {
-                        label: 'Equipos',
-                        data: <?php echo json_encode($data_equipos); ?>,
-                        backgroundColor: '#3b82f6', // Azul
-                        borderRadius: 4
+        // --- GRÁFICO 1: DONA (TIPOS) ---
+        <?php if (count($tipos_data) > 0): ?>
+            const ctx1 = document.getElementById('chartTipos');
+            if (ctx1) {
+                new Chart(ctx1, {
+                    type: 'doughnut',
+                    data: {
+                        labels: <?php echo json_encode($tipos_labels); ?>,
+                        datasets: [{
+                            label: 'Cantidad',
+                            data: <?php echo json_encode($tipos_data); ?>,
+                            backgroundColor: [
+                                '#3b82f6', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#6366f1'
+                            ],
+                            borderWidth: 2,
+                            hoverOffset: 4
+                        }]
                     },
-                    {
-                        label: 'Empleados',
-                        data: <?php echo json_encode($data_empleados); ?>,
-                        backgroundColor: '#f59e0b', // Amarillo/Naranja
-                        borderRadius: 4
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
+                        }
                     }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'top', align: 'end', labels: { usePointStyle: true } }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: { borderDash: [2, 4] }
-                    },
-                    x: {
-                        grid: { display: false }
-                    }
-                }
+                });
             }
-        });
-    }
-    <?php endif; ?>
+        <?php endif; ?>
 
-});
+        // --- GRÁFICO 2: BARRAS (SUCURSALES) ---
+        <?php if (count($sucursal_labels) > 0): ?>
+            const ctx2 = document.getElementById('chartSucursales');
+            if (ctx2) {
+                new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: <?php echo json_encode($sucursal_labels); ?>,
+                        datasets: [
+                            {
+                                label: 'Equipos',
+                                data: <?php echo json_encode($data_equipos); ?>,
+                                backgroundColor: '#3b82f6', // Azul
+                                borderRadius: 4
+                            },
+                            {
+                                label: 'Empleados',
+                                data: <?php echo json_encode($data_empleados); ?>,
+                                backgroundColor: '#f59e0b', // Amarillo/Naranja
+                                borderRadius: 4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top', align: 'end', labels: { usePointStyle: true } }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { borderDash: [2, 4] }
+                            },
+                            x: {
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                });
+            }
+        <?php endif; ?>
+
+    });
 </script>
