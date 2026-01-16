@@ -2,15 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Baja extends Model
 {
-    use HasFactory;
+    protected $table = 'bajas';
 
-    protected $table = 'bajas'; // Explicit table name
     protected $guarded = ['id'];
+
+    public $timestamps = false;
+
+    protected $casts = [
+        'fecha_baja' => 'date',
+    ];
 
     public function equipo()
     {

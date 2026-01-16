@@ -48,4 +48,25 @@ class PdfController extends Controller
         $pdf = Pdf::loadView('pdf.acta_devolucion', $data);
         return $pdf->stream('Acta_Devolucion_' . $asignacion->equipo->codigo_inventario . '.pdf');
     }
+
+    public function actaBaja(Request $request)
+    {
+        $request->validate([
+            'id_equipo' => 'required|exists:equipos,id',
+            'motivo' => 'required|string',
+            'observaciones' => 'nullable|string',
+        ]);
+
+        $equipo = Equipo::with(['marca', 'modelo', 'tipo_equipo', 'sucursal'])->findOrFail($request->id_equipo);
+
+        $data = [
+            'equipo' => $equipo,
+            'fecha' => date('d/m/Y'),
+            'motivo' => $request->motivo,
+            'observaciones' => $request->observaciones,
+        ];
+
+        $pdf = Pdf::loadView('pdf.acta_baja', $data);
+        return $pdf->stream('acta_baja_' . $equipo->codigo_inventario . '.pdf');
+    }
 }

@@ -9,19 +9,19 @@
                     <label class="form-label">Buscar por DNI o Nombre</label>
                     <input wire:model.live.debounce.300ms="texto" type="text" class="form-control form-control-sm">
                 </div>
-                
+
                 @if(!$userSucursal)
-                <div class="col-md-4">
-                    <label class="form-label">Sucursal</label>
-                    <select wire:model.live="sucursalId" class="form-select form-select-sm">
-                        <option value="">Todas</option>
-                        @foreach($sucursales as $suc)
-                            <option value="{{ $suc->id }}">{{ $suc->nombre }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Sucursal</label>
+                        <select wire:model.live="sucursalId" class="form-select form-select-sm">
+                            <option value="">Todas</option>
+                            @foreach($sucursales as $suc)
+                                <option value="{{ $suc->id }}">{{ $suc->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 @endif
-                
+
                 <div class="col-md-4">
                     <label class="form-label">Área</label>
                     <select wire:model.live="areaId" class="form-select form-select-sm">
@@ -31,8 +31,8 @@
                         @endforeach
                     </select>
                 </div>
-                
-                 <div class="col-md-4">
+
+                <div class="col-md-4">
                     <label class="form-label">Cargo</label>
                     <select wire:model.live="cargoId" class="form-select form-select-sm">
                         <option value="">Todas</option>
@@ -51,7 +51,7 @@
                     </select>
                 </div>
                 <div class="col-md-4 d-flex align-items-end">
-                     <button wire:click="$set('texto', '')" class="btn btn-secondary btn-sm">Limpiar</button>
+                    <button wire:click="$set('texto', '')" class="btn btn-secondary btn-sm">Limpiar</button>
                 </div>
             </div>
             <hr>
@@ -65,7 +65,8 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="h4">Listado de Empleados</h2>
-        <button class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Registrar Nuevo Empleado</button>
+        <a href="{{ route('empleados.create') }}" class="btn btn-primary"><i
+                class="bi bi-plus-circle me-2"></i>Registrar Nuevo Empleado</a>
     </div>
 
     <div class="card">
@@ -74,7 +75,8 @@
                 <table class="table table-striped table-hover" style="width:100%">
                     <thead class="table-dark">
                         <tr>
-                            @if(!$userSucursal) <th>Sucursal</th> @endif
+                            @if(!$userSucursal)
+                            <th>Sucursal</th> @endif
                             <th>DNI</th>
                             <th>Apellidos y Nombres</th>
                             <th>Cargo</th>
@@ -86,7 +88,8 @@
                     <tbody>
                         @forelse ($empleados as $empleado)
                             <tr>
-                                @if(!$userSucursal) <td>{{ $empleado->sucursal->nombre ?? 'N/A' }}</td> @endif
+                                @if(!$userSucursal)
+                                <td>{{ $empleado->sucursal->nombre ?? 'N/A' }}</td> @endif
                                 <td>{{ $empleado->dni }}</td>
                                 <td>{{ $empleado->apellidos }}, {{ $empleado->nombres }}</td>
                                 <td>{{ $empleado->cargo->nombre ?? 'N/A' }}</td>
@@ -97,7 +100,8 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-warning btn-sm" title="Editar"><i class="bi bi-pencil"></i></button>
+                                    <a href="{{ route('empleados.edit', $empleado->id) }}" class="btn btn-warning btn-sm"
+                                        title="Editar"><i class="bi bi-pencil"></i></a>
                                 </td>
                             </tr>
                         @empty
