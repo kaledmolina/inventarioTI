@@ -19,7 +19,10 @@ require __DIR__ . '/auth.php';
 
 // New Inventory Routes (Protected)
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Sucursales
     Route::get('/sucursales', SucursalesIndex::class)->name('sucursales.index');
+    Route::get('/sucursales/crear', \App\Livewire\Sucursales\Create::class)->name('sucursales.create');
+    Route::get('/sucursales/editar/{id}', \App\Livewire\Sucursales\Edit::class)->name('sucursales.edit');
 
     // Areas
     Route::get('/areas', \App\Livewire\Areas\Index::class)->name('areas.index');
