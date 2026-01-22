@@ -64,12 +64,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     <i class="bi bi-speedometer2"></i> Dashboard
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="escanear.php" class="nav-link <?php if ($current_page == 'escanear.php')
-                    echo 'active'; ?>">
-                    <i class="bi bi-qr-code-scan"></i> Escanear
-                </a>
-            </li>
+
             <li>
                 <a href="equipos.php" class="nav-link <?php if (in_array($current_page, ['equipos.php', 'equipo_agregar.php', 'equipo_editar.php', 'equipo_detalle.php']))
                     echo 'active'; ?>">

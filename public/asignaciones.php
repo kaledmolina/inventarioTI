@@ -48,9 +48,10 @@ if (!empty($filtro_empleado)) {
     $params[] = $filtro_empleado;
 }
 if (!empty($filtro_equipo)) {
-    $where_clauses[] = "a.id_equipo = ?";
-    $types .= "i";
-    $params[] = $filtro_equipo;
+    // MODIFICADO: Buscar por código de inventario (string) para soportar escáner
+    $where_clauses[] = "e.codigo_inventario LIKE ?";
+    $types .= "s";
+    $params[] = "%" . $filtro_equipo . "%";
 }
 if (!empty($filtro_estado)) {
     if ($filtro_estado == 'Activa')
@@ -115,16 +116,11 @@ $equipos = $conexion->query("SELECT id, codigo_inventario FROM equipos WHERE est
                             }
                         } ?>
                     </select></div>
-                <div class="col-md-4"><label class="form-label">Equipo (Código)</label><select
-                        class="form-select form-select-sm" name="equipo">
-                        <option value="">Todos</option>
-                        <?php if ($equipos) {
-                            while ($eq = $equipos->fetch_assoc()) {
-                                echo "<option value='{$eq['id']}' " . ($filtro_equipo == $eq['id'] ? 'selected' : '') . ">" . htmlspecialchars($eq['codigo_inventario']) . "</option>";
-                            }
-                        } ?>
-                    </select></div>
-                <div class="col-md-3"><label class="form-label">Estado Asignación</label><select
+                <div class="col-md-4"><label class="form-label">Equipo (Escanear Código)</label>
+                    <input type="text" class="form-control form-control-sm" name="equipo" value="<?php echo htmlspecialchars($filtro_equipo); ?>" 
+                        placeholder="Escanear o escribir código..." autofocus>
+                </div>
+                <div class=" col-md-3"><label class="form-label">Estado Asignación</label><select
                         class="form-select form-select-sm" name="estado">
                         <option value="">Todos</option>
                         <option value="Activa" <?php if ($filtro_estado == 'Activa')
@@ -132,7 +128,8 @@ $equipos = $conexion->query("SELECT id, codigo_inventario FROM equipos WHERE est
                         <option value="Finalizada" <?php if ($filtro_estado == 'Finalizada')
                             echo 'selected'; ?>>Finalizada
                         </option>
-                    </select></div>
+                    </select>
+                </div>
                 <div class="col-md-3"><label class="form-label">Fecha Entrega (Desde)</label><input type="date"
                         class="form-control form-control-sm" name="fecha_desde"
                         value="<?php echo htmlspecialchars($filtro_fecha_desde); ?>"></div>
