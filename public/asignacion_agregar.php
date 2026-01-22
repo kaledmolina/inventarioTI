@@ -128,7 +128,17 @@ if ($es_admin_general) {
 
         function startScanner() {
             html5QrcodeScanner = new Html5Qrcode("reader");
-            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+            const config = {
+                fps: 10,
+                qrbox: { width: 300, height: 150 },
+                formatsToSupport: [
+                    Html5QrcodeSupportedFormats.QR_CODE,
+                    Html5QrcodeSupportedFormats.CODE_128,
+                    Html5QrcodeSupportedFormats.CODE_39,
+                    Html5QrcodeSupportedFormats.EAN_13,
+                    Html5QrcodeSupportedFormats.UPC_A
+                ]
+            };
 
             // Preferir cámara trasera
             html5QrcodeScanner.start({ facingMode: "environment" }, config, onScanSuccess)
@@ -155,12 +165,15 @@ if ($es_admin_general) {
             // Buscar en el select
             let encontrado = false;
             for (let i = 0; i < selectEquipo.options.length; i++) {
-                // Asumiendo que el texto del option comienza con el código o lo contiene
-                // Formato actual: "CODIGO (Marca Modelo)"
-                let optionText = selectEquipo.options[i].text;
+                let option = selectEquipo.options[i];
+                let optionText = option.text;
+                let optionBarcode = option.getAttribute('data-barcode');
 
-                // Limpiar texto para comparar (por si acaso hay espacios extra o mayúsculas)
-                if (optionText.toUpperCase().includes(decodedText.toUpperCase())) {
+                // Comparar con el texto (QR/Inventario) O con el barcode
+                if (
+                    optionText.toUpperCase().includes(decodedText.toUpperCase()) ||
+                    (optionBarcode && optionBarcode.toUpperCase() === decodedText.toUpperCase())
+                ) {
                     selectEquipo.selectedIndex = i;
                     encontrado = true;
                     stopScanner(); // Detener escáner al encontrar
@@ -168,9 +181,6 @@ if ($es_admin_general) {
                     // Efecto visual de éxito
                     selectEquipo.classList.add('is-valid');
                     setTimeout(() => selectEquipo.classList.remove('is-valid'), 2000);
-
-                    // Notificar
-                    // alert("Equipo encontrado: " + optionText);
                     break;
                 }
             }
@@ -281,6 +291,10 @@ if ($es_admin_general) {
                     if (equipos && !equipos.error && equipos.length > 0) {
                         equipos.forEach(eq => {
                             const option = new Option(`${eq.codigo_inventario} (${eq.marca_nombre} ${eq.modelo_nombre})`, eq.id);
+                            // Guardar el código de barras en un atributo data
+                            if (eq.codigo_barras) {
+                                option.setAttribute('data-barcode', eq.codigo_barras);
+                            }
                             selectEquipo.add(option);
                         });
                         selectEquipo.disabled = false;

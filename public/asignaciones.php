@@ -48,9 +48,10 @@ if (!empty($filtro_empleado)) {
     $params[] = $filtro_empleado;
 }
 if (!empty($filtro_equipo)) {
-    // MODIFICADO: Buscar por código de inventario (string) para soportar escáner
-    $where_clauses[] = "e.codigo_inventario LIKE ?";
-    $types .= "s";
+    // MODIFICADO: Buscar por código de inventario O código de barras
+    $where_clauses[] = "(e.codigo_inventario LIKE ? OR e.codigo_barras LIKE ?)";
+    $types .= "ss";
+    $params[] = "%" . $filtro_equipo . "%";
     $params[] = "%" . $filtro_equipo . "%";
 }
 if (!empty($filtro_estado)) {
@@ -117,7 +118,8 @@ $equipos = $conexion->query("SELECT id, codigo_inventario FROM equipos WHERE est
                         } ?>
                     </select></div>
                 <div class="col-md-4"><label class="form-label">Equipo (Escanear Código)</label>
-                    <input type="text" class="form-control form-control-sm" name="equipo" value="<?php echo htmlspecialchars($filtro_equipo); ?>" 
+                    <input type="text" class="form-control form-control-sm" name="equipo"
+                        value="<?php echo htmlspecialchars($filtro_equipo); ?>"
                         placeholder="Escanear o escribir código..." autofocus>
                 </div>
                 <div class=" col-md-3"><label class="form-label">Estado Asignación</label><select

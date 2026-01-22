@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recibir TODOS los datos del formulario
     $id_sucursal = $_POST['id_sucursal'];
     $codigo = trim($_POST['codigo_inventario']);
+    $barcode = trim($_POST['codigo_barras'] ?? ''); // Nuevo campo
     $serie = trim($_POST['numero_serie']);
     $id_tipo = $_POST['id_tipo_equipo'];
     $id_marca = $_POST['id_marca'];
@@ -46,14 +47,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // INSERTAR DATOS COMPLETOS
             $sql = "INSERT INTO equipos (
-                        codigo_inventario, numero_serie, id_sucursal, id_tipo_equipo, id_marca, id_modelo, 
+                        codigo_inventario, codigo_barras, numero_serie, id_sucursal, id_tipo_equipo, id_marca, id_modelo, 
                         fecha_adquisicion, tipo_adquisicion, caracteristicas, proveedor, observaciones, estado
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
             $stmt = $conexion->prepare($sql);
-            $stmt->bind_param("ssiiiissssss", 
-                $codigo, $serie, $id_sucursal, $id_tipo, $id_marca, $id_modelo, 
-                $fecha, $tipo_adq, $caracteristicas, $proveedor, $observaciones, $estado
+            $stmt->bind_param(
+                "sssiiiissssss",
+                $codigo,
+                $barcode,
+                $serie,
+                $id_sucursal,
+                $id_tipo,
+                $id_marca,
+                $id_modelo,
+                $fecha,
+                $tipo_adq,
+                $caracteristicas,
+                $proveedor,
+                $observaciones,
+                $estado
             );
 
             if ($stmt->execute()) {
@@ -99,12 +112,12 @@ $marcas = $conexion->query("SELECT id, nombre FROM marcas WHERE estado = 'Activo
     <div class="card-body p-4">
         <form action="equipo_agregar.php" method="POST">
             <div class="row g-3">
-                
+
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Sucursal <span class="text-danger">*</span></label>
                     <select class="form-select" name="id_sucursal" required>
                         <option value="">Seleccione...</option>
-                        <?php 
+                        <?php
                         $sucursal_fija = $_SESSION['user_sucursal_id'] ?? null;
                         if ($sucursales) {
                             mysqli_data_seek($sucursales, 0);
@@ -121,24 +134,41 @@ $marcas = $conexion->query("SELECT id, nombre FROM marcas WHERE estado = 'Activo
                     <input type="text" class="form-control" name="codigo_inventario" required placeholder="Ej: INV-001">
                 </div>
 
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">Código de Barras (Opcional)</label>
+                    <input type="text" class="form-control" name="codigo_barras"
+                        placeholder="Escanee o ingrese el código de barras">
+                </div>
+
                 <div class="col-12">
                     <label class="form-label fw-bold">Número de Serie</label>
-                    <input type="text" class="form-control" name="numero_serie" placeholder="Ingrese el número de serie">
+                    <input type="text" class="form-control" name="numero_serie"
+                        placeholder="Ingrese el número de serie">
                 </div>
 
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Tipo de Equipo <span class="text-danger">*</span></label>
                     <select class="form-select" name="id_tipo_equipo" required>
                         <option value="">Seleccione...</option>
-                        <?php if($tipos) { mysqli_data_seek($tipos,0); while($r=$tipos->fetch_assoc()){echo "<option value='{$r['id']}'>{$r['nombre']}</option>";}} ?>
+                        <?php if ($tipos) {
+                            mysqli_data_seek($tipos, 0);
+                            while ($r = $tipos->fetch_assoc()) {
+                                echo "<option value='{$r['id']}'>{$r['nombre']}</option>";
+                            }
+                        } ?>
                     </select>
                 </div>
-                
+
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Marca <span class="text-danger">*</span></label>
                     <select class="form-select" name="id_marca" id="id_marca" required>
                         <option value="">Seleccione...</option>
-                        <?php if($marcas) { mysqli_data_seek($marcas,0); while($r=$marcas->fetch_assoc()){echo "<option value='{$r['id']}'>{$r['nombre']}</option>";}} ?>
+                        <?php if ($marcas) {
+                            mysqli_data_seek($marcas, 0);
+                            while ($r = $marcas->fetch_assoc()) {
+                                echo "<option value='{$r['id']}'>{$r['nombre']}</option>";
+                            }
+                        } ?>
                     </select>
                 </div>
 
@@ -160,12 +190,14 @@ $marcas = $conexion->query("SELECT id, nombre FROM marcas WHERE estado = 'Activo
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Características</label>
-                    <input type="text" class="form-control" name="caracteristicas" placeholder="Ej: Core i5, 16GB RAM...">
+                    <input type="text" class="form-control" name="caracteristicas"
+                        placeholder="Ej: Core i5, 16GB RAM...">
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Fecha de Adquisición</label>
-                    <input type="date" class="form-control" name="fecha_adquisicion" value="<?php echo date('Y-m-d'); ?>">
+                    <input type="date" class="form-control" name="fecha_adquisicion"
+                        value="<?php echo date('Y-m-d'); ?>">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Proveedor</label>
@@ -192,28 +224,28 @@ $marcas = $conexion->query("SELECT id, nombre FROM marcas WHERE estado = 'Activo
 <?php require_once '../templates/footer.php'; ?>
 
 <script>
-$(document).ready(function() {
-    $('#id_marca').on('change', function() {
-        var idMarca = $(this).val();
-        
-        // Limpiar y mostrar "Cargando..."
-        $('#id_modelo').html('<option value="">Cargando modelos...</option>');
+    $(document).ready(function () {
+        $('#id_marca').on('change', function () {
+            var idMarca = $(this).val();
 
-        if (idMarca) {
-            $.ajax({
-                url: 'obtener_modelos.php',
-                type: 'POST',
-                data: { id_marca: idMarca },
-                success: function(response) {
-                    $('#id_modelo').html(response);
-                },
-                error: function() {
-                    $('#id_modelo').html('<option value="">Error al cargar modelos</option>');
-                }
-            });
-        } else {
-            $('#id_modelo').html('<option value="">Seleccione una marca primero</option>');
-        }
+            // Limpiar y mostrar "Cargando..."
+            $('#id_modelo').html('<option value="">Cargando modelos...</option>');
+
+            if (idMarca) {
+                $.ajax({
+                    url: 'obtener_modelos.php',
+                    type: 'POST',
+                    data: { id_marca: idMarca },
+                    success: function (response) {
+                        $('#id_modelo').html(response);
+                    },
+                    error: function () {
+                        $('#id_modelo').html('<option value="">Error al cargar modelos</option>');
+                    }
+                });
+            } else {
+                $('#id_modelo').html('<option value="">Seleccione una marca primero</option>');
+            }
+        });
     });
-});
 </script>
