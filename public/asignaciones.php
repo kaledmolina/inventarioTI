@@ -228,6 +228,13 @@ $equipos = $conexion->query("SELECT id, codigo_inventario FROM equipos WHERE est
                                         <a href="generar_acta.php?id_asignacion=<?php echo $asignacion['id_asignacion']; ?>"
                                             target="_blank" class="btn btn-secondary btn-sm" title="Imprimir Acta Entrega"><i
                                                 class="bi bi-printer"></i></a>
+
+                                        <?php if ($asignacion['estado_asignacion'] === 'Finalizada'): ?>
+                                            <a href="generar_acta_devolucion.php?id_asignacion=<?php echo $asignacion['id_asignacion']; ?>"
+                                                target="_blank" class="btn btn-warning btn-sm" title="Imprimir Acta Devolución"><i
+                                                    class="bi bi-file-earmark-text"></i></a>
+                                        <?php endif; ?>
+
                                         <?php if ($asignacion['estado_asignacion'] === 'Activa'): ?>
                                             <a href="asignacion_devolver.php?id=<?php echo $asignacion['id_asignacion']; ?>"
                                                 class="btn btn-danger btn-sm" title="Registrar Devolución"><i
