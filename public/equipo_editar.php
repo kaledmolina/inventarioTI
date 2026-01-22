@@ -166,8 +166,14 @@ $modelos = $stmt_modelos->get_result();
 
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Código de Barras</label>
-                    <input type="text" class="form-control" name="codigo_barras"
-                        value="<?php echo htmlspecialchars($equipo['codigo_barras'] ?? ''); ?>">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="codigo_barras" id="codigo_barras"
+                            value="<?php echo htmlspecialchars($equipo['codigo_barras'] ?? ''); ?>">
+                        <button class="btn btn-outline-dark" type="button" id="btnScanBarcode">
+                            <i class="bi bi-qr-code-scan"></i>
+                        </button>
+                    </div>
+                    <div id="reader-barcode" class="mt-2" style="width: 100%; display:none;"></div>
                 </div>
 
                 <div class="col-md-6">
@@ -301,5 +307,64 @@ $modelos = $stmt_modelos->get_result();
                 $('#id_modelo').html('<option value="">Seleccione una marca primero</option>');
             }
         });
+
+        // --- SCANNER LOGIC ---
+        const btnScan = document.getElementById('btnScanBarcode');
+        const readerDiv = document.getElementById('reader-barcode');
+        const inputBarcode = document.getElementById('codigo_barras');
+        let html5QrcodeScanner = null;
+
+        if (btnScan) {
+            btnScan.addEventListener('click', function () {
+                if (readerDiv.style.display === 'none') {
+                    readerDiv.style.display = 'block';
+                    startScanner();
+                } else {
+                    stopScanner();
+                }
+            });
+        }
+
+        function startScanner() {
+            html5QrcodeScanner = new Html5Qrcode("reader-barcode");
+            const config = {
+                fps: 10,
+                qrbox: { width: 250, height: 150 },
+                formatsToSupport: [
+                    Html5QrcodeSupportedFormats.QR_CODE,
+                    Html5QrcodeSupportedFormats.CODE_128,
+                    Html5QrcodeSupportedFormats.CODE_39,
+                    Html5QrcodeSupportedFormats.EAN_13,
+                    Html5QrcodeSupportedFormats.UPC_A
+                ]
+            };
+
+            html5QrcodeScanner.start({ facingMode: "environment" }, config, onScanSuccess)
+                .catch(err => {
+                    console.error("Error iniciando cámara", err);
+                    alert("No se pudo iniciar la cámara. Verifique permisos.");
+                });
+        }
+
+        function stopScanner() {
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.stop().then(() => {
+                    readerDiv.style.display = 'none';
+                    html5QrcodeScanner.clear();
+                }).catch(err => console.error("Error deteniendo cámara", err));
+            } else {
+                readerDiv.style.display = 'none';
+            }
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log(`Código escaneado: ${decodedText}`);
+            inputBarcode.value = decodedText;
+            stopScanner();
+
+            // Visual feedback
+            inputBarcode.classList.add('is-valid');
+            setTimeout(() => inputBarcode.classList.remove('is-valid'), 2000);
+        }
     });
 </script>
