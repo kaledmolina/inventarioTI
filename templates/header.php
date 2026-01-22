@@ -83,6 +83,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 </a>
             </li>
             <li>
+                <a href="clientes.php" class="nav-link <?php if (in_array($current_page, ['clientes.php', 'cliente_agregar.php', 'cliente_editar.php']))
+                    echo 'active'; ?>">
+                    <i class="bi bi-person-lines-fill"></i> Clientes
+                </a>
+            </li>
+            <li>
                 <a href="asignaciones.php" class="nav-link <?php if (str_starts_with($current_page, 'asignacion'))
                     echo 'active'; ?>">
                     <i class="bi bi-card-checklist"></i> Asignaciones
