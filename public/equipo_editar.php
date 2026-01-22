@@ -357,8 +357,26 @@ $modelos = $stmt_modelos->get_result();
             }
         }
 
+
+        function playBeep() {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime); // 1200 Hz
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.1);
+        }
+
         function onScanSuccess(decodedText, decodedResult) {
             console.log(`Código escaneado: ${decodedText}`);
+            playBeep();
             inputBarcode.value = decodedText;
             stopScanner();
 
