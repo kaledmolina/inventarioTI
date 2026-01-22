@@ -48,7 +48,8 @@ if ($es_admin_general) {
                     <?php else: ?>
                         <?php $nombre_sucursal = $conexion->query("SELECT nombre FROM sucursales WHERE id = $id_sucursal_usuario")->fetch_assoc()['nombre']; ?>
                         <option value="<?php echo $id_sucursal_usuario; ?>" selected>
-                            <?php echo htmlspecialchars($nombre_sucursal); ?></option>
+                            <?php echo htmlspecialchars($nombre_sucursal); ?>
+                        </option>
                     <?php endif; ?>
                 </select>
                 <?php if (!$es_admin_general): ?>
@@ -81,9 +82,15 @@ if ($es_admin_general) {
 
             <div class="mb-3">
                 <label for="selectEquipo" class="form-label">Seleccionar Equipo *</label>
-                <select class="form-select" id="selectEquipo" name="id_equipo" required <?php echo $es_admin_general ? 'disabled' : ''; ?>>
-                    <option value="">Cargando...</option>
-                </select>
+                <div class="input-group">
+                    <select class="form-select" id="selectEquipo" name="id_equipo" required <?php echo $es_admin_general ? 'disabled' : ''; ?>>
+                        <option value="">Cargando...</option>
+                    </select>
+                    <button class="btn btn-outline-dark" type="button" id="btnScan">
+                        <i class="bi bi-qr-code-scan"></i>
+                    </button>
+                </div>
+                <div id="reader" class="mt-2" style="width: 100%; display:none;"></div>
             </div>
 
             <div class="mb-3">
@@ -100,12 +107,80 @@ if ($es_admin_general) {
 </div>
 
 <script>
+
     document.addEventListener('DOMContentLoaded', function () {
         const selectSucursal = document.getElementById('selectSucursal');
         const selectEmpleado = document.getElementById('selectEmpleado');
         const selectEquipo = document.getElementById('selectEquipo');
+        const btnScan = document.getElementById('btnScan');
+        const readerDiv = document.getElementById('reader');
+        let html5QrcodeScanner = null;
 
-        // Elementos nuevos para Cliente
+        // --- LÓGICA DE ESCÁNER ---
+        btnScan.addEventListener('click', function () {
+            if (readerDiv.style.display === 'none') {
+                readerDiv.style.display = 'block';
+                startScanner();
+            } else {
+                stopScanner();
+            }
+        });
+
+        function startScanner() {
+            html5QrcodeScanner = new Html5Qrcode("reader");
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+            // Preferir cámara trasera
+            html5QrcodeScanner.start({ facingMode: "environment" }, config, onScanSuccess)
+                .catch(err => {
+                    console.error("Error iniciando cámara", err);
+                    alert("No se pudo iniciar la cámara. Verifique permisos.");
+                });
+        }
+
+        function stopScanner() {
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.stop().then(() => {
+                    readerDiv.style.display = 'none';
+                    html5QrcodeScanner.clear();
+                }).catch(err => console.error("Error deteniendo cámara", err));
+            } else {
+                readerDiv.style.display = 'none';
+            }
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log(`Código escaneado: ${decodedText}`);
+
+            // Buscar en el select
+            let encontrado = false;
+            for (let i = 0; i < selectEquipo.options.length; i++) {
+                // Asumiendo que el texto del option comienza con el código o lo contiene
+                // Formato actual: "CODIGO (Marca Modelo)"
+                let optionText = selectEquipo.options[i].text;
+
+                // Limpiar texto para comparar (por si acaso hay espacios extra o mayúsculas)
+                if (optionText.toUpperCase().includes(decodedText.toUpperCase())) {
+                    selectEquipo.selectedIndex = i;
+                    encontrado = true;
+                    stopScanner(); // Detener escáner al encontrar
+
+                    // Efecto visual de éxito
+                    selectEquipo.classList.add('is-valid');
+                    setTimeout(() => selectEquipo.classList.remove('is-valid'), 2000);
+
+                    // Notificar
+                    // alert("Equipo encontrado: " + optionText);
+                    break;
+                }
+            }
+
+            if (!encontrado) {
+                alert(`El código ${decodedText} no coincide con ningún equipo disponible en esta sucursal.`);
+            }
+        }
+
+        // --- LÓGICA DE ELEMENTOS NUEVOS ---
         const radioEmpleado = document.getElementById('radioEmpleado');
         const radioCliente = document.getElementById('radioCliente');
         const divEmpleado = document.getElementById('divEmpleado');
@@ -231,7 +306,8 @@ if ($es_admin_general) {
             // Si es admin de sucursal, cargar los datos inmediatamente
             cargarDropdowns(selectSucursal.value);
         }
-    });
+    }); // End DOMContentLoaded
+
 </script>
 
 
